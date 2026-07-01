@@ -19,40 +19,38 @@ async function countVisitor() {
 function openHelp() {
   showModal(`
     <div class="p-6 space-y-4 overflow-y-auto">
-      <div class="flex items-center justify-between"><h3 class="text-lg font-bold">📖 如何設定免費 Firebase</h3><button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl">×</button></div>
-      <ol class="space-y-3 text-sm text-slate-600 leading-relaxed list-decimal pl-5">
-        <li>前往 <a href="https://console.firebase.google.com" target="_blank" class="text-blue-600 underline">Firebase 主控台</a>，用 Google 帳號登入。</li>
-        <li>點「新增專案」，輸入名稱，一路按繼續完成建立（可關閉 Google Analytics）。</li>
-        <li>左側 <b>建構 → Firestore Database</b>，點「建立資料庫」，選「<b>以測試模式啟動</b>」，地區建議 <code>asia-east1</code>。</li>
-        <li>左側 <b>建構 → Authentication → 開始使用</b>，在「Sign-in method」啟用「<b>匿名</b>」。</li>
-        <li>回「專案總覽」，點 <b>&lt;/&gt;（網頁）</b> 圖示新增應用程式，取得 <code>firebaseConfig</code>。</li>
-        <li>複製 config 物件大括號內六行內容，點本系統「⚙️ 設定」貼上即可。</li>
-        <li>正式上線前，請將下方安全規則貼到 <b>Firestore → 規則</b> 並發布。</li>
-      </ol>
-      <div class="bg-slate-50 rounded-xl p-3">
-        <div class="flex items-center justify-between mb-1"><span class="text-xs font-bold text-slate-500">建議 Firestore 安全規則</span><button onclick="copyText(document.getElementById('rulesText').textContent,'已複製安全規則')" class="text-xs text-blue-600 underline">複製</button></div>
-        <pre id="rulesText" class="text-[11px] bg-white border rounded p-2 overflow-x-auto whitespace-pre">rules_version = '2';
+      <div class="flex items-center justify-between"><h3 class="text-lg font-bold">📖 v3.0 使用說明</h3><button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl">×</button></div>
 
-service cloud.firestore {
-  match /databases/{database}/documents {
+      <div class="space-y-3 text-sm text-slate-600 leading-relaxed">
+        <p><b>🎉 v3.0 重大更新：</b>已完全移除 Firebase 依賴，採用純本地架構。</p>
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time &lt; timestamp.date(2126, 7, 24);
-    }
-  }
-}</pre>
-        <p class="text-[11px] text-slate-400 mt-1">※ 座號密碼/老師密碼屬前端輕量保護，適合一般班級非機敏用途。如需更高安全性，請改用 Firebase 自訂後端驗證。</p>
+        <h4 class="font-bold text-slate-700">💻 純本地模式（預設）</h4>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>資料儲存在你的瀏覽器（localStorage），不需要網路</li>
+          <li>支援多個班級，可隨時切換</li>
+          <li>一鍵匯出 / 匯入 JSON 備份</li>
+          <li>QR Code 產生器，方便家長下載當週資料</li>
+        </ul>
+
+        <h4 class="font-bold text-slate-700">📱 給家長分享資料</h4>
+        <ol class="list-decimal pl-5 space-y-1">
+          <li>點頁尾「<b>📱 產生家長 QR</b>」按鈕</li>
+          <li>選擇要分享的內容（公告、聯絡資訊、當週作業）</li>
+          <li>產生 QR Code，截圖傳到 Line 群組或印出</li>
+          <li>家長掃描後在手機上看到唯讀的當週資料</li>
+        </ol>
+
+        <h4 class="font-bold text-slate-700">☁️ 想升級雲端同步？</h4>
+        <p>v3.0 預留 <b>Supabase 同步</b>介面（可選啟用）。Supabase 比 Firebase 簡單：
+          免費額度更慷慨、設定只要 5 分鐘、不用懂 GCP。</p>
+        <p>未來啟用時只要填入 Supabase URL + Anon Key，就能讓家長即時看到作業更新。</p>
+
+        <h4 class="font-bold text-slate-700">🔒 資料安全</h4>
+        <p>本系統使用前端輕量密碼保護（SHA-256 hash + sessionStorage），適合一般班級非機敏用途。
+          重要個資請加密備份、定期匯出 JSON 存到安全位置。</p>
       </div>
-      <div class="text-right"><button onclick="closeModal();openSettings()" class="btn3d b-blue text-sm">前往設定 →</button></div>
+
+      <div class="text-right"><button onclick="closeModal();openSettings()" class="btn3d b-blue text-sm">前往班級設定 →</button></div>
     </div>`, { size: "max-w-xl" });
 }
 
@@ -202,14 +200,6 @@ function openLocalSettings() {
             <input type="file" accept=".json" class="hidden" onchange="localImportFile(this)">
           </label>
         </div>
-
-        <!-- 切換至 Firebase 模式 -->
-        <div class="border-t pt-4">
-          <button onclick="switchToFirebase()" class="w-full py-2.5 rounded-xl bg-sky-50 text-sky-600 border border-sky-200 font-bold text-sm hover:bg-sky-100">
-            ☁️ 切換為 Firebase 雲端模式
-          </button>
-        </div>
-
       </div>
     </div>`, { size: "max-w-lg" });
 }

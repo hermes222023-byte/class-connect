@@ -1138,9 +1138,11 @@
 
 <!-- ════════════════════ 頁尾：作者與授權 ════════════════════ -->
 <footer class="max-w-3xl mx-auto px-4 py-8 text-center space-y-2">
-  <div class="text-xs text-slate-400">
+  <div class="text-xs text-slate-400 space-x-2">
     <button onclick="openHelp()" class="underline hover:text-slate-600">使用說明</button> ·
-    <button onclick="openSettings()" class="underline hover:text-slate-600">系統設定</button>
+    <button onclick="openSettings()" class="underline hover:text-slate-600">系統設定</button> ·
+    <button onclick="HermesTools.showShareQR(window._localActiveId, 'snapshot')" class="underline hover:text-slate-600">📱 產生家長 QR</button> ·
+    <button onclick="HermesTools.showSupabaseSettings()" class="underline hover:text-slate-600">☁️ 雲端同步</button>
   </div>
   <p class="text-sm text-slate-500">
     Made by
@@ -1179,6 +1181,8 @@
 <script src="js/00-local-db.js?v=20260627s"></script>
 <script src="js/01-config-core.js?v=20260627s"></script>
 <script src="js/90-imghost.js?v=20260627s"></script>
+<!-- v3.0 新增：QR Code 工具 + Supabase 同步介面 -->
+<script src="js/95-qr-sync.js?v=20260627s"></script>
 <script src="js/02-app-core.js?v=20260627s"></script>
 <script src="js/03-auth.js?v=20260627s"></script>
 <script src="js/04-utils.js?v=20260627s"></script>

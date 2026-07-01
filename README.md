@@ -1,8 +1,37 @@
-# 班級親師互動網 V2 — 功能分割版
+# 班級親師互動網 V3.0 — Firebase-Free 純本地版
 
-> 一個給國中小老師使用的**班級親師互動網頁系統**。聯絡簿、作業檢核、公告、日曆、回條、加扣分、座位表、課堂小工具⋯⋯把日常班務集中在一個網頁裡，家長與學生也能即時查看。
+> 一個給國中小老師使用的**班級親師互動網頁系統**。聯絡簿、作業檢核、公告、日曆、回條、加扣分、座位表、課堂小工具⋯⋯把日常班務集中在一個網頁裡，家長與學生也能透過 QR Code 取得資料。
 >
 > 原作者：阿剛老師 ｜ 純前端、單頁應用，**不需要架後端伺服器**。
+
+---
+
+## 🎉 v3.0 重大更新（2026-07-01）
+
+**完全移除 Firebase 依賴**，採用純本地架構：
+
+| 項目 | v2.x | v3.0 |
+|---|---|---|
+| 預設資料儲存 | Firebase Firestore | **localStorage**（瀏覽器本地） |
+| 雲端選項 | Firebase | **Supabase**（可選，預設關閉） |
+| 家長分享 | Firebase 分享連結 | **QR Code**（截圖/印出/Line 傳） |
+| 設定複雜度 | 需建 Firebase 專案、設 Rules | **零設定**，開箱即用 |
+| 隱私 | 資料在 Google 雲端 | **完全本地**，不上傳個資 |
+
+### ✨ v3.0 新增功能
+
+- 📱 **QR Code 產生器**：一鍵產生當週資料 QR Code，家長用手機掃描即可看到唯讀資料
+- ☁️ **Supabase 雲端同步**（可選）：想用雲端時 5 分鐘設定完成，比 Firebase 簡單
+- 💾 **一鍵匯出/匯入 JSON**：完整備份班級所有資料
+- 🏫 **多班級管理**：一頁面管理多個班級，隨時切換
+
+### 保留所有原版功能
+
+聯絡簿、每日作業、班級日曆、公告、回條、教材、線上測驗、訪客說明設定、admin 管理、快速功能、親師訊息、加扣分、座位表、課堂小工具、圖床 — 全部 15 個模組繼續可用。
+
+### 線上展示
+
+👉 **https://hermes222023-byte.github.io/class-connect/**
 
 ---
 
@@ -13,10 +42,61 @@
 - **維護者**：hermes222023-byte
 - **來源專案**：[kentxchang-goedutw/class-connect](https://github.com/kentxchang-goedutw/class-connect)
 - **線上展示**：https://hermes222023-byte.github.io/class-connect/
-- **授權**：本作品採用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW) 授權，**歡迎自由修改、分享，但須保留原作者署名且不得商業使用**。
+- **授權**：本作品採用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW) 授權，**歡迎自由修改、分享，但須保留原作者署名且不得商業使用**
 
-### 與原版的差異
-本 fork 僅加入少量個人化調整與維護註記，核心功能與程式碼維持原作者設計。如需查看完整原始碼，請參考來源專案。
+### v3.0 與原版的差異
+
+- **移除**：Firebase SDK、Firestore 設定 UI、相容性 shim（部分）
+- **新增**：QR Code 工具、Supabase 同步介面、純本地架構強化
+- **保留**：所有 15 個功能模組、CC BY-NC-SA 4.0 授權、簡報 `.pptx` 操作教學
+
+---
+
+## ⚡ 快速開始（v3.0）
+
+1. 開啟 [https://hermes222023-byte.github.io/class-connect/](https://hermes222023-byte.github.io/class-connect/)
+2. 點「**🚀 開始使用**」
+3. 輸入班級名稱（例如「三年一班」）
+4. 完成！開始用！
+
+### 給家長分享資料
+
+1. 進入班級後，點頁尾「**📱 產生家長 QR**」
+2. 選擇「**當週資料快照**」或「**完整備份**」
+3. 截圖傳到 Line 群組 / 印出 / 顯示在投影機上
+4. 家長用手機相機掃描 → 開啟唯讀的家長端頁面
+
+### 備份與還原
+
+- **匯出**：點頁尾「**⬇️ 備份**」按鈕，下載 `.json` 檔
+- **匯入**：到「**系統設定**」→「**從備份檔匯入班級**」
+- 建議每週備份一次，存到自己的雲端硬碟
+
+### 雲端同步（可選）
+
+1. 到 [supabase.com](https://supabase.com) 註冊並建立專案
+2. 執行 SQL 建立 table（見頁面內教學）
+3. 複製 URL 和 anon key
+4. 點頁尾「**☁️ 雲端同步**」貼上啟用
+
+---
+
+## ⚠️ v3.0 限制（重要）
+
+- **資料在本機**：清瀏覽器資料、更換電腦前請先匯出備份
+- **家長看到的是「唯讀快照」**：家長端無法即時互動（要看最新資料要重新掃 QR）
+- **要即時互動**：請啟用 Supabase 雲端同步（v3.0 可選功能）
+- **多裝置同步**：純 localStorage 模式不行，請用 Supabase
+
+---
+
+## 目錄
+
+- [v3.0 重大更新](#-v30-重大更新2026-07-01)
+- [快速開始](#-快速開始v30)
+- [Firebase 舊版教學](#firebase-舊版教學) *(保留供參考)*
+- [功能模組總覽](#功能模組總覽)
+- [授權與致謝](#授權與致謝)
 
 ---
 
@@ -63,6 +143,12 @@
 | 適合對象 | 想讓家長在家查看的班級 | 只想自己上課用、或不想連網的老師 |
 
 > **一句話判斷**：要讓**家長在家連上來看**，就用 **Firebase 雲端版**；只是自己上課當小工具用，就用**本地版**。
+
+---
+
+## ⚠️ Firebase 舊版教學（v3.0 不適用，僅保留供參考）
+
+> **v3.0 已完全移除 Firebase 整合**。以下內容來自原作者 v2.x 版本，**不再適用於目前版本**。如果你想用雲端同步，請參考 [雲端同步（可選）](#雲端同步可選) 章節，v3.0 推薦使用 Supabase。
 
 ---
 
@@ -351,10 +437,82 @@ python -m http.server 8000
 - 本作品為班級親師互動之教學用途網頁系統。
 
 ### 本 Fork 維護者
-- **hermes222023-byte** ｜ [GitHub Repo](https://github.com/hermes222023-byte/class-connect)
-- 改作內容僅限 README 補充說明、部署設定與後續個人化調整，核心功能由原作者設計。
+- **hermes222023-byte** ｜ [GitHub Repo](https://github.com/hermes222023-byte/class-connect) ｜ v3.0 Firebase-Free
+- v3.0 改作內容：移除 Firebase、新增 QR Code 工具與 Supabase 同步介面。核心功能與其他模組由原作者設計。
 
 ### 授權
 本作品採用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW) 國際授權條款。**您可以自由分享、修改本作品，但須保留原作者署名、不得商業使用、並以相同方式分享。**
+
+---
+
+## 🛠 v3.0 技術細節
+
+### 檔案結構
+
+```
+class-connect/
+├── index.html                    # 主頁面（單頁應用）
+├── LICENSE                       # CC BY-NC-SA 4.0
+├── README.md                     # 本檔案
+├── 班級親師互動網_操作教學簡報.pptx  # 原作者教學簡報
+└── js/
+    ├── 00-local-db.js            # localStorage 抽象層（Firestore shim）
+    ├── 01-config-core.js         # 設定區、Toast、modal、全域狀態
+    ├── 02-app-core.js            # 啟動流程、模組載入
+    ├── 03-auth.js                # 登入驗證
+    ├── 04-utils.js               # 工具函式
+    ├── 10-contactbook.js         # 每日聯絡簿
+    ├── 11-homework.js            # 作業檢核
+    ├── 12-calendar.js            # 班級日曆
+    ├── 13-announcements.js       # 公告與榮譽榜
+    ├── 14-slips.js               # 回條拍照回傳
+    ├── 15-resources.js           # 資源充電站
+    ├── 16-quiz.js                # 今日小考成績
+    ├── 20-visitor-help-settings.js  # 訪客說明、班級設定
+    ├── 30-admin.js               # admin 後台
+    ├── 40-quick.js               # 快速功能
+    ├── 50-messages.js            # 親師訊息
+    ├── 60-points.js              # 課堂加扣分
+    ├── 70-seating.js             # 座位表
+    ├── 80-tools.js               # 課堂小工具
+    ├── 90-imghost.js             # 圖床
+    └── 95-qr-sync.js             # v3.0 新增：QR Code 工具 + Supabase 同步
+```
+
+### 資料儲存
+
+所有資料儲存在 `localStorage`，每個班級獨立前綴：
+
+| 用途 | LocalStorage Key |
+|---|---|
+| 班級清單 | `LOCAL_classes` |
+| 當前班級 | `LOCAL_activeClass` |
+| 各班資料 | `LOCAL_ldb_{classId}_{collection}/{docId}` |
+| 各班索引 | `LOCAL_ldb_{classId}_{collection}/__index__` |
+| 老師密碼 | `LOCAL_teacherPwd` |
+| Supabase 設定 | `supabaseConfig` |
+
+### 全域 API（v3.0 新增）
+
+```js
+// QR Code 工具
+HermesTools.showShareQR(classId, 'snapshot')     // 顯示當週 QR
+HermesTools.showShareQR(classId, 'full')         // 顯示完整備份 QR
+HermesTools.downloadShareJSON(classId, type)     // 下載 JSON
+HermesTools.copyShareLink(classId, type)         // 複製連結
+
+// Supabase 工具
+HermesTools.showSupabaseSettings()               // 顯示設定視窗
+HermesTools.connectSupabase()                    // 啟用
+HermesTools.disconnectSupabase()                 // 停用
+HermesTools.pushToSupabase(classId)              // 推送
+HermesTools.pullFromSupabase(classId)            // 拉取
+```
+
+### URL 參數（v3.0 新增）
+
+```
+?cc-data={compressed}    家長端唯讀模式（QR Code 內容）
+```
 
 如果這個專案對你有幫助，歡迎在 GitHub 給一顆 ⭐！

@@ -8,6 +8,12 @@
 window.addEventListener("DOMContentLoaded", init);
 
 function init() {
+  // v3.0: 如果 URL 帶有 cc-data 參數，表示這是家長端唯讀模式，立即跳過老師介面
+  if (location.search.includes("cc-data=")) {
+    console.log("📱 家長端模式（cc-data URL），跳過老師介面");
+    return;  // HermesTools.checkURLForSharedData 會處理剩下的事
+  }
+
   const mode = localStorage.getItem(LS_MODE);
 
   /* ── 純本地模式（v3.0 唯一模式，Firebase 已完全移除） ── */
