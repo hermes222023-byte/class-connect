@@ -10,8 +10,8 @@ window.addEventListener("DOMContentLoaded", init);
 function init() {
   const mode = localStorage.getItem(LS_MODE);
 
-  /* ── 純本地模式 ── */
-  if (mode === "local") {
+  /* ── 純本地模式（v3.0 唯一模式，Firebase 已完全移除） ── */
+  if (mode === "local" || true) {  // 強制走本地（向下相容舊設定）
     LOCAL_MODE = true;
     const classId = LocalDB.getActiveClassId();
     if (!classId) {
@@ -20,12 +20,6 @@ function init() {
     }
     LocalDB.init(classId);
     db = LocalDB.getShimDb();
-    if (typeof firebase === "undefined" || !firebase.firestore) {
-      window.firebase = window.firebase || {};
-      firebase.firestore = firebase.firestore || function(){};
-      firebase.firestore.FieldValue = LocalDB.getShimDb()._fieldValue;
-      firebase.firestore.FieldPath = LocalDB.getShimDb().FieldPath;
-    }
     document.getElementById("connBar").classList.remove("hidden");
     setConn("local");
     window._localActiveId = classId;
@@ -37,28 +31,6 @@ function init() {
     startApp();
     return;
   }
-
-  /* ── Firebase 模式（原有流程） ── */
-  ACTIVE_CONFIG = resolveConfig();
-  if (!ACTIVE_CONFIG) {
-    showModeSelector();
-    return;
-  }
-
-  try {
-    firebase.initializeApp(ACTIVE_CONFIG);
-    db = firebase.firestore();
-    auth = firebase.auth();
-    document.getElementById("connBar").classList.remove("hidden");
-  } catch (e) {
-    console.error(e);
-    showFatal("Firebase 初始化失敗，請檢查設定是否正確。", e.message);
-    return;
-  }
-
-  auth.signInAnonymously()
-    .then(() => { setConn("ok"); restoreSession(); startApp(); })
-    .catch(err => { console.error(err); setConn("err"); showFatal("匿名登入失敗", err.message + "\n\n請確認 Firebase 主控台已啟用「匿名」登入方式。"); });
 }
 
 /* ── 顯示「首次使用：選擇模式」引導 ── */
@@ -72,21 +44,15 @@ function showModeSelector() {
         <h2 class="text-xl font-black text-slate-700">歡迎使用班級親師互動網</h2>
         <p class="text-sm text-slate-500">請選擇您要使用的資料儲存方式</p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <button onclick="chooseModeLocal()" class="mode-card group text-left p-5 rounded-2xl border-2 border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 hover:border-violet-400 hover:shadow-lg transition-all">
+      <div class="grid grid-cols-1 gap-4">
+        <div class="mode-card group text-left p-5 rounded-2xl border-2 border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50">
           <div class="text-3xl mb-3">💻</div>
           <h3 class="font-black text-violet-700 text-base mb-1">純本地使用</h3>
           <p class="text-xs text-slate-500 leading-relaxed">資料儲存在本機瀏覽器，<b>不需要網路</b>，完全免費。支援多個班級，可匯出備份。</p>
-          <div class="mt-3 text-xs text-violet-600 font-bold">✓ 無需設定　✓ 多班級　✓ 可備份匯出</div>
-        </button>
-        <button onclick="chooseModeFirebase()" class="mode-card group text-left p-5 rounded-2xl border-2 border-sky-200 bg-gradient-to-br from-sky-50 to-blue-50 hover:border-sky-400 hover:shadow-lg transition-all">
-          <div class="text-3xl mb-3">☁️</div>
-          <h3 class="font-black text-sky-700 text-base mb-1">Firebase 雲端</h3>
-          <p class="text-xs text-slate-500 leading-relaxed">資料同步到 Google Firebase 雲端，家長可即時查看，支援多裝置同步。</p>
-          <div class="mt-3 text-xs text-sky-600 font-bold">✓ 即時同步　✓ 家長端　✓ 多裝置</div>
-        </button>
+          <div class="mt-3 text-xs text-violet-600 font-bold">✓ 無需設定　✓ 多班級　✓ 可備份匯出　✓ QR Code 分享</div>
+        </div>
       </div>
-      <p class="text-[11px] text-slate-400 text-center">選擇後可在「系統設定」中切換</p>
+      <p class="text-[11px] text-slate-400 text-center">v3.0 — 已移除 Firebase，改用純本地架構。需要多裝置同步可參考 README。</p>
     </div>`, { size: "max-w-lg", noBackdropClose: true });
 }
 

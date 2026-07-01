@@ -1,37 +1,30 @@
 /* ══════════════════════════════════════════════════════════════════
    01-config-core.js
-   Firebase 設定區、LocalStorage 鍵名、Toast、通用模態視窗、
-   設定來源解析、全域狀態與各模組共用變數。
+   設定區（Firebase 已於 v3.0 移除）、LocalStorage 鍵名、Toast、
+   通用模態視窗、全域狀態與各模組共用變數。
    （此檔需最先載入；其餘各檔的函式皆共用此處宣告的全域變數）
 ══════════════════════════════════════════════════════════════════ */
 
 /* ══════════════════════════════════════════════════════════════════
-   【★ Firebase 設定區 ★】
+   【★ Firebase 已於 v3.0 完全移除 ★】
    ────────────────────────────────────────────────────────────────
-   使用者請直接修改下方六行引號內的數值，填入您真實的 Firebase 設定即可
-   （無需更動變數名稱或大括號）。
-   若維持 "demo"，程式會改從網址參數或本機設定（LocalStorage）讀取，
-   皆無有效設定時，會進入「主畫面引導」狀態，請點畫面上的「設定」按鈕。
+   下方保留空殼設定物件，避免舊模組因變數不存在而報錯。
+   本系統改用純 localStorage（00-local-db.js）+ 可選 Supabase 雲端。
 ══════════════════════════════════════════════════════════════════ */
-const firebaseConfig = {
-    apiKey: "demo",
-    authDomain: "demo",
-    projectId: "demo",
-    storageBucket: "demo",
-    messagingSenderId: "demo",
-    appId: "demo"
-};
+const firebaseConfig = null;  // v3.0: 不再使用，留 null 給向後相容
 
 /* ── LocalStorage 鍵名 ── */
-const LS_CONFIG  = "firebaseConfig";   // 動態設定
+const LS_CONFIG  = "firebaseConfig";   // 保留鍵名（向後相容，實際不再使用）
 const LS_DEVICE  = "ptHubDeviceId";    // 不重複訪客用裝置 ID
 const LS_SESSION = "ptHubSession";     // 家長登入狀態（記住我）
-const LS_MODE    = "ptHubMode";        // "firebase" | "local"
+const LS_MODE    = "ptHubMode";        // v3.0: 永遠是 "local"
 const LS_LOCAL_TEACHER_PWD = "LOCAL_teacherPwd"; // 本地模式老師密碼（班級獨立存）
 const LS_TEACHER_VIEW = "ptHubTeacherView"; // 教師介面呈現："scroll"(捲動) | "tab"(分頁)
 
 /* ── 本地模式全域旗標 ── */
-let LOCAL_MODE = false;   // true = 純本地模式，false = Firebase 模式
+let LOCAL_MODE = true;    // v3.0: 永遠是 true（純本地模式）
+
+// 註：db / auth / ACTIVE_CONFIG 在下方 102 行附近宣告，勿重複
 
 /* ════════ Toast 通知（取代 alert） ════════ */
 function toast(msg, type = "info") {

@@ -12,11 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
-<!-- Firebase v8 (Compat) SDK，使用 CDN 載入，方便單檔部署 -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<!-- JSZip：回條圖片打包下載 -->
+<!-- 第三方工具：JSZip（回條圖片打包下載） -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <style>
@@ -925,15 +921,15 @@
 
 <main class="max-w-3xl mx-auto px-4 py-6 space-y-6">
 
-  <!-- 未設定 Firebase 時的引導區塊 -->
+  <!-- 首次使用：歡迎畫面（v3.0 純本地） -->
   <section id="setupGuide" class="hidden card-3d theme-violet text-center">
     <div class="card-body space-y-4 py-8">
-      <div class="text-6xl">🔧</div>
-      <h2 class="text-2xl font-black text-violet-700">尚未連線資料庫</h2>
-      <p class="text-slate-500 text-sm leading-relaxed">本系統需要連結您自己的 <b>免費 Firebase 專案</b> 才能運作。<br/>請先閱讀說明並完成設定。</p>
+      <div class="text-6xl">👋</div>
+      <h2 class="text-2xl font-black text-violet-700">歡迎使用班級親師互動網</h2>
+      <p class="text-slate-500 text-sm leading-relaxed">v3.0 純本地版 — 資料儲存在你的瀏覽器，<b>不需註冊、不需 Firebase</b>，完全免費。</p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-        <button onclick="openHelp()" class="btn3d b-amber text-base">📖 如何設定 Firebase</button>
-        <button onclick="openSettings()" class="btn3d b-blue text-base">⚙️ 設定 Firebase 連線</button>
+        <button onclick="chooseModeLocal()" class="btn3d b-violet text-base">🚀 開始使用</button>
+        <button onclick="openHelp()" class="btn3d b-amber text-base">📖 使用說明</button>
       </div>
       <p class="text-xs text-slate-400 pt-3">Made by
         <a href="https://kentxchang.blogspot.tw" target="_blank" rel="noopener" class="font-bold text-violet-600 underline">阿剛老師</a>
