@@ -101,7 +101,7 @@ function resolveConfig() {
 let db = null, auth = null, ACTIVE_CONFIG = null;
 let APP_STATE = {
   config: null, students: [], session: null, isTeacher: false,
-  calMonth: null, calEvents: [],
+  calMonth: (function(){ const d = new Date(); d.setDate(1); return d; })(), calEvents: [],
 };
 const DEFAULT_PERMS = { contactbook: "login", calendar: "public", announcements: "public", slips: "login", resources: "public", quiz: "login" };
 const MODULE_NAMES = { contactbook: "每日聯絡簿", calendar: "班級日曆", announcements: "公告與榮譽榜", slips: "回條拍照回傳", resources: "資源充電站", quiz: "今日小考成績" };

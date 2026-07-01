@@ -12,6 +12,7 @@ function renderCalendar() {
   const locked = document.getElementById("calLocked"), grid = document.getElementById("calGrid");
   if (!canView("calendar")) { locked.classList.remove("hidden"); grid.classList.add("hidden"); return; }
   locked.classList.add("hidden"); grid.classList.remove("hidden");
+  if (!APP_STATE.calMonth) { APP_STATE.calMonth = new Date(); APP_STATE.calMonth.setDate(1); }
   const m = APP_STATE.calMonth;
   document.getElementById("calLabel").textContent = `${m.getFullYear()}年${m.getMonth()+1}月`;
   const year = m.getFullYear(), month = m.getMonth();
